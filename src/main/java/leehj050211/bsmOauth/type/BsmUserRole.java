@@ -1,6 +1,6 @@
 package leehj050211.bsmOauth.type;
 
-public enum BsmAuthUserRole {
+public enum BsmUserRole {
     STUDENT,
     TEACHER;
 }

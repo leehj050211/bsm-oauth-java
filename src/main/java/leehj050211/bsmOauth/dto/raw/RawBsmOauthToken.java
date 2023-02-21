@@ -1,11 +1,9 @@
-package leehj050211.bsmOauth.dto;
+package leehj050211.bsmOauth.dto.raw;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
-public class BsmOauthTokenDto {
+public class RawBsmOauthToken {
 
     private String token;
 

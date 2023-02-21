@@ -7,24 +7,24 @@
 BsmOauth bsmOauth = new BsmOauth(BSM_AUTH_CLIENT_ID, BSM_AUTH_CLIENT_SECRET);
 ```
 ```java
-BsmResourceResponse resource;
+BsmUserResource resource;
 try {
     // 인증코드로 토큰 발급
     String token = bsmOauth.getToken(authCode);
     // 토큰으로 유저 정보 가져오기
     resource = bsmOauth.getResource(token);
-} catch (BsmAuthCodeNotFoundException e) {
+} catch (BsmOAuthCodeNotFoundException e) {
     // 인증코드를 찾을 수 없을 때
-} catch (BsmAuthTokenNotFoundException e) {
+} catch (BsmOAuthCodeNotFoundException e) {
     // 토큰을 찾을 수 없을 때
-} catch (BsmAuthInvalidClientException e) {
+} catch (BsmOAuthInvalidClientException e) {
     // 클라이언트 정보가 잘못되었을 때
 }
 // 가져온 유저 정보 확인
 System.out.println(resource.getUserCode());
 ```
-### 학생, 선생님계정 구분하기
-getRole 메서드로 Enum 타입을 가져올 수 있습니다.
+### 학생, 선생님 계정 구분하기
+getRole 메서드로 학생, 선생님 계정을 구분할 수 있습니다. 
 ```java
 switch (resource.getRole()) {
     case STUDENT -> {
@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.leehj050211:bsm-oauth-java:1.0.0'
+    implementation 'com.github.leehj050211:bsm-oauth-java:1.0.1'
 }
 ```
 maven으로 설치
@@ -62,6 +62,6 @@ maven으로 설치
 <dependency>
     <groupId>com.github.leehj050211</groupId>
     <artifactId>bsm-oauth-java</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```

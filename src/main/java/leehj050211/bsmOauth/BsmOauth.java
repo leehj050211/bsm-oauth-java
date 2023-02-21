@@ -10,12 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import leehj050211.bsmOauth.dto.BsmOauthResourceDto;
-import leehj050211.bsmOauth.dto.BsmOauthTokenDto;
-import leehj050211.bsmOauth.dto.response.BsmResourceResponse;
-import leehj050211.bsmOauth.exceptions.BsmAuthCodeNotFoundException;
-import leehj050211.bsmOauth.exceptions.BsmAuthInvalidClientException;
-import leehj050211.bsmOauth.exceptions.BsmAuthTokenNotFoundException;
+import leehj050211.bsmOauth.dto.raw.RawBsmOauthResource;
+import leehj050211.bsmOauth.dto.raw.RawBsmOauthToken;
+import leehj050211.bsmOauth.dto.resource.BsmUserResource;
+import leehj050211.bsmOauth.exception.BsmOAuthCodeNotFoundException;
+import leehj050211.bsmOauth.exception.BsmOAuthInvalidClientException;
+import leehj050211.bsmOauth.exception.BsmOAuthTokenNotFoundException;
 
 public class BsmOauth {
 
@@ -31,7 +31,7 @@ public class BsmOauth {
         this.BSM_AUTH_CLIENT_SECRET = BSM_AUTH_CLIENT_SECRET;
     }
 
-    public String getToken(String authCode) throws IOException, BsmAuthCodeNotFoundException, BsmAuthInvalidClientException {
+    public String getToken(String authCode) throws IOException, BsmOAuthCodeNotFoundException, BsmOAuthInvalidClientException {
         // Payload
         JsonObject payload = new JsonObject();
         payload.addProperty("clientId", BSM_AUTH_CLIENT_ID);
@@ -42,15 +42,15 @@ public class BsmOauth {
         HttpURLConnection conn = httpRequest(BSM_AUTH_TOKEN_URL, payload);
         if (conn.getResponseCode() == 404) {
             conn.disconnect();
-            throw new BsmAuthCodeNotFoundException();
+            throw new BsmOAuthCodeNotFoundException();
         }
-        String response = convertHttpResponse(conn);
+        String response = toHttpResponse(conn);
 
-        return gson.fromJson(response, BsmOauthTokenDto.class)
+        return gson.fromJson(response, RawBsmOauthToken.class)
                 .getToken();
     }
 
-    public BsmResourceResponse getResource(String token) throws IOException, BsmAuthTokenNotFoundException, BsmAuthInvalidClientException {
+    public BsmUserResource getResource(String token) throws IOException, BsmOAuthTokenNotFoundException, BsmOAuthInvalidClientException {
         URL url = new URL(BSM_AUTH_RESOURCE_URL);
         // Payload
         JsonObject payload = new JsonObject();
@@ -63,18 +63,18 @@ public class BsmOauth {
         HttpURLConnection conn = httpRequest(BSM_AUTH_RESOURCE_URL, payload);
         if (conn.getResponseCode() == 404) {
             conn.disconnect();
-            throw new BsmAuthTokenNotFoundException();
+            throw new BsmOAuthTokenNotFoundException();
         }
-        String response = convertHttpResponse(conn);
+        String response = toHttpResponse(conn);
 
         JsonElement element = JsonParser.parseString(response)
                 .getAsJsonObject().get("user");
-        BsmOauthResourceDto rawResource = new Gson().fromJson(element, BsmOauthResourceDto.class);
+        RawBsmOauthResource rawResource = gson.fromJson(element, RawBsmOauthResource.class);
 
-        return rawResource.toResource();
+        return BsmUserResource.create(rawResource);
     }
 
-    private HttpURLConnection httpRequest(String urlStr, JsonObject payload) throws IOException, BsmAuthInvalidClientException {
+    private HttpURLConnection httpRequest(String urlStr, JsonObject payload) throws IOException, BsmOAuthInvalidClientException {
         URL url = new URL(urlStr);
         String payloadStr = gson.toJson(payload);
 
@@ -91,12 +91,12 @@ public class BsmOauth {
         // Error check
         if (conn.getResponseCode() == 400) {
             conn.disconnect();
-            throw new BsmAuthInvalidClientException();
+            throw new BsmOAuthInvalidClientException();
         }
         return conn;
     }
 
-    private String convertHttpResponse(HttpURLConnection conn) throws IOException {
+    private String toHttpResponse(HttpURLConnection conn) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder response = new StringBuilder();
         String line;
