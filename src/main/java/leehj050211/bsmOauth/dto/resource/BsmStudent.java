@@ -7,10 +7,10 @@ import lombok.Getter;
 public class BsmStudent {
 
     private String name;
-    private int enrolledAt;
-    private int grade;
-    private int classNo;
-    private int studentNo;
+    private Integer enrolledAt;
+    private Integer grade;
+    private Integer classNo;
+    private Integer studentNo;
 
     public static BsmStudent create(RawBsmOauthResource rawResource) {
         BsmStudent student = new BsmStudent();
