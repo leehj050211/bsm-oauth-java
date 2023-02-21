@@ -13,6 +13,7 @@ public class BsmUserResource {
     private String email;
     private BsmStudent student;
     private BsmTeacher teacher;
+    private String profileUrl;
 
     public static BsmUserResource create(RawBsmOauthResource rawResource) {
         BsmUserResource resource = new BsmUserResource();
@@ -20,6 +21,7 @@ public class BsmUserResource {
         resource.role = rawResource.getRole();
         resource.nickname = rawResource.getNickname();
         resource.email = rawResource.getEmail();
+        resource.profileUrl = rawResource.getProfileUrl();
         if (resource.role == BsmUserRole.STUDENT) {
             resource.student = BsmStudent.create(rawResource);
         }
