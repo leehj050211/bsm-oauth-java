@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.leehj050211:bsm-oauth-java:1.0.1'
+    implementation 'com.github.leehj050211:bsm-oauth-java:1.0.3'
 }
 ```
 maven으로 설치
@@ -62,6 +62,6 @@ maven으로 설치
 <dependency>
     <groupId>com.github.leehj050211</groupId>
     <artifactId>bsm-oauth-java</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
 </dependency>
 ```
