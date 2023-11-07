@@ -1,6 +1,6 @@
 package leehj050211.bsmOauth.dto.resource;
 
-import leehj050211.bsmOauth.dto.raw.RawBsmOauthResource;
+import leehj050211.bsmOauth.dto.raw.RawBsmOAuthResource;
 import leehj050211.bsmOauth.type.BsmUserRole;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ public class BsmUserResource {
     private BsmTeacher teacher;
     private String profileUrl;
 
-    public static BsmUserResource create(RawBsmOauthResource rawResource) {
+    public static BsmUserResource create(RawBsmOAuthResource rawResource) {
         BsmUserResource resource = new BsmUserResource();
         resource.userCode = rawResource.getCode();
         resource.role = rawResource.getRole();

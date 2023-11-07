@@ -6,11 +6,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class RawBsmOauthResource {
+public class RawBsmOAuthResource {
 
     private Long code;
     private String nickname;
+    private Boolean isGraduate;
     private Integer enrolledAt;
+    private Integer cardinal;
     private Integer grade;
     private Integer classNo;
     private Integer studentNo;

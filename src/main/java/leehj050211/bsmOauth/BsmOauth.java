@@ -10,8 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import leehj050211.bsmOauth.dto.raw.RawBsmOauthResource;
-import leehj050211.bsmOauth.dto.raw.RawBsmOauthToken;
+import leehj050211.bsmOauth.dto.raw.RawBsmOAuthResource;
+import leehj050211.bsmOauth.dto.raw.RawBsmOAuthToken;
 import leehj050211.bsmOauth.dto.resource.BsmUserResource;
 import leehj050211.bsmOauth.exception.BsmOAuthCodeNotFoundException;
 import leehj050211.bsmOauth.exception.BsmOAuthInvalidClientException;
@@ -46,18 +46,21 @@ public class BsmOauth {
         }
         String response = toHttpResponse(conn);
 
-        return gson.fromJson(response, RawBsmOauthToken.class)
+        return gson.fromJson(response, RawBsmOAuthToken.class)
                 .getToken();
     }
 
     public BsmUserResource getResource(String token) throws IOException, BsmOAuthTokenNotFoundException, BsmOAuthInvalidClientException {
-        URL url = new URL(BSM_AUTH_RESOURCE_URL);
+        RawBsmOAuthResource rawResource = this.getRawResource(token);
+        return BsmUserResource.create(rawResource);
+    }
+
+    public RawBsmOAuthResource getRawResource(String token) throws IOException, BsmOAuthTokenNotFoundException, BsmOAuthInvalidClientException {
         // Payload
         JsonObject payload = new JsonObject();
         payload.addProperty("clientId", BSM_AUTH_CLIENT_ID);
         payload.addProperty("clientSecret", BSM_AUTH_CLIENT_SECRET);
         payload.addProperty("token", token);
-        String payloadStr = gson.toJson(payload);
 
         // Request
         HttpURLConnection conn = httpRequest(BSM_AUTH_RESOURCE_URL, payload);
@@ -69,9 +72,7 @@ public class BsmOauth {
 
         JsonElement element = JsonParser.parseString(response)
                 .getAsJsonObject().get("user");
-        RawBsmOauthResource rawResource = gson.fromJson(element, RawBsmOauthResource.class);
-
-        return BsmUserResource.create(rawResource);
+        return gson.fromJson(element, RawBsmOAuthResource.class);
     }
 
     private HttpURLConnection httpRequest(String urlStr, JsonObject payload) throws IOException, BsmOAuthInvalidClientException {
