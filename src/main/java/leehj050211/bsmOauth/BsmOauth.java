@@ -21,8 +21,8 @@ public class BsmOauth {
 
     private final String BSM_AUTH_CLIENT_ID;
     private final String BSM_AUTH_CLIENT_SECRET;
-    private final String BSM_AUTH_TOKEN_URL = "https://auth.bssm.kro.kr/api/oauth/token";
-    private final String BSM_AUTH_RESOURCE_URL = "https://auth.bssm.kro.kr/api/oauth/resource";
+    private final String BSM_AUTH_TOKEN_URL = "https://api-auth.bssm.app/api/oauth/token";
+    private final String BSM_AUTH_RESOURCE_URL = "https://api-auth.bssm.app/api/oauth/resource";
     private final Gson gson;
 
     public BsmOauth(String BSM_AUTH_CLIENT_ID, String BSM_AUTH_CLIENT_SECRET) {
