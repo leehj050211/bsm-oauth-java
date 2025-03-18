@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RawBsmOAuthResource {
 
-    private Long code;
+    private Long id;
     private String nickname;
     private Boolean isGraduate;
     private Integer enrolledAt;

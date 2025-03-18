@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class BsmUserResource {
 
-    private Long userCode;
+    private Long id;
     private BsmUserRole role;
     private String nickname;
     private String email;
@@ -17,7 +17,7 @@ public class BsmUserResource {
 
     public static BsmUserResource create(RawBsmOAuthResource rawResource) {
         BsmUserResource resource = new BsmUserResource();
-        resource.userCode = rawResource.getCode();
+        resource.id = rawResource.getId();
         resource.role = rawResource.getRole();
         resource.nickname = rawResource.getNickname();
         resource.email = rawResource.getEmail();
@@ -29,6 +29,14 @@ public class BsmUserResource {
             resource.teacher = BsmTeacher.create(rawResource);
         }
         return resource;
+    }
+
+    /**
+     * @deprecated 유저 식별자가 code에서 id로 변경되었습니다
+     */
+    @Deprecated
+    public Long getUserCode() {
+        return this.id;
     }
 
 }
